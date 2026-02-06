@@ -273,7 +273,7 @@ Return ONLY JSON in this exact format:
   res.json({ steps });
 });
 
-/* ---------------- IMAGE TEACH (FIXED & ALIGNED) ---------------- */
+/* ---------------- IMAGE TEACH ---------------- */
 
 app.post("/teach-image", upload.single("image"), async (req, res) => {
   try {
@@ -387,3 +387,4 @@ Return ONLY JSON in this exact format:
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
