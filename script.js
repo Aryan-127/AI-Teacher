@@ -139,7 +139,7 @@ function add(role, text) {
     save(); renderList(); renderChat();
 }
 
-/* ---------------- FIXED MIC / STT ---------------- */
+/* ---------------- MIC / STT ---------------- */
 
 let rec = null;
 
@@ -231,7 +231,7 @@ async function teachTextOnly(text) {
     const status = document.getElementById("status");
     status.textContent = "Teacher is thinking...";
     try {
-        const res = await fetch("http://localhost:3000/teach", {
+        const res = await fetch("https://ai-teacher-9azw.onrender.com/teach", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -269,7 +269,7 @@ async function teachImage(text, file) {
     badge.style.display = "none";
 
     try {
-        const res = await fetch("http://localhost:3000/teach-image", { method: "POST", body: fd });
+        const res = await fetch("https://ai-teacher-9azw.onrender.com/teach-image", { method: "POST", body: fd });
         const data = await res.json();
 
         if (!Array.isArray(data.steps)) {
@@ -325,5 +325,6 @@ else {
     activeChatId = chats[0].id;
     renderList(); renderChat(); renderBoard();
 }
+
 
 document.getElementById("newChatBtn").onclick = createChat;
