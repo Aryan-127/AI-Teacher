@@ -218,7 +218,17 @@ app.post("/teach", async (req, res) => {
         {
           role: "system",
           content: `
-You are a personal AI teacher for ONE student.
+You are a personal AI teacher teaching ONE student.
+
+CRITICAL RULES:
+- The student learns mainly by listening.
+- spokenText MUST fully explain the board content in detail.
+- For every board line, verbally explain it clearly.
+- spokenText should be at least 3–5 sentences per major board section.
+- Do NOT summarize. Teach step-by-step like a real teacher.
+- spokenText must explain WHAT is written on the board and WHY.
+- Assume the student is listening more than reading.
+
 ${voiceProfiles[voiceProfile]}
 
 The teacher must write on the board using STRICT formatting symbols.
@@ -305,7 +315,16 @@ app.post("/teach-image", upload.single("image"), async (req, res) => {
           {
             role: "system",
             content: `
-You are a personal AI teacher explaining from an image. 
+You are a personal AI teacher explaining from an image.
+CRITICAL RULES:
+- The student learns mainly by listening.
+- spokenText MUST fully explain the board content in detail.
+- For every board line, verbally explain it clearly.
+- spokenText should be at least 3–5 sentences per major board section.
+- Do NOT summarize. Teach step-by-step like a real teacher.
+- spokenText must explain WHAT is written on the board and WHY.
+- Assume the student is listening more than reading.
+
 ${voiceProfiles[voiceProfile] || voiceProfiles.english}
 
 BOARD SYMBOLS (Use these at the start of the string):
@@ -342,7 +361,7 @@ Return ONLY JSON in this exact format:
     });
 
     const d = await r.json();
-    
+
     if (d.error) {
       console.error("OpenAI Error:", d.error);
       return res.status(500).json({ error: "AI failed to process image." });
@@ -357,7 +376,7 @@ Return ONLY JSON in this exact format:
 
     // 3. Process steps (Generate Audio & Board Fallbacks)
     let steps = Array.isArray(parsed.steps) ? parsed.steps : [];
-    
+
     // If the AI returned a single step object instead of an array
     if (steps.length === 0 && parsed.spokenText) {
       steps = [parsed];
@@ -373,7 +392,7 @@ Return ONLY JSON in this exact format:
 
       // Generate the teacher's voice
       s.audio = spoken ? await generateSpeech(spoken) : null;
-      
+
       // Save teacher's response to history
       await saveMessage(finalChatId, "teacher", spoken);
     }
@@ -387,4 +406,3 @@ Return ONLY JSON in this exact format:
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
-
